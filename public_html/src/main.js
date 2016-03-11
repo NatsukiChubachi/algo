@@ -14,7 +14,6 @@ var _gGame = null;
 var _gCommon = null;
 
 _gCommon = new CCommon();
-        
 
 var bgLPath = "Resources/Textures/UI/BG/SGJ_background_L_02.png";
 var bgRPath = "Resources/Textures/UI/BG/SGJ_background_R_02.png";
