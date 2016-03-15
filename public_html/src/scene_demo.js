@@ -78,7 +78,7 @@ CreateDemoScreen = function()
         _gGame.popScene();
         this.demoCount++;
         
-        CreateScene_MainLogic();
+//        CreateScene_MainLogic();
     });
 
     _demo.demoCount = 0;
