@@ -92,7 +92,6 @@ window.onload = function()
      * Set needed file lists in relative/absolute path for attributes of Core#preload
      * 必要なファイルを相対パスで引数に指定する。 ファイルはすべて、ゲームが始まる前にロードされる。
      */
-
     game.preload([
         bgLPath,
         bgRPath,
@@ -158,12 +157,14 @@ window.onload = function()
         label.font = "12px 'Arial'";
 
         /*
+        // BGMの再生
         bgm = game.assets[bgmPath];
         game.rootScene.addEventListener("enterframe", function(){
           bgm.play();
         });
         */
 
+        // ロボット
         robot = new Sprite(150, 200);
 
         /**
