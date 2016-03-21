@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 
+/**
+ * コモンクラス
+ * @returns {CCommon}
+ */
 var CCommon = function() 
 {
     // グループの作成
