@@ -163,8 +163,9 @@ CMainLogicScreen = function()
         
         // イベント（パネルのキャンセル）
         _itemSprite.addEventListener("touchstart", 
-        function(){
-            if ( this._params._hole !== null )
+        function()
+        {
+            if ( this._params._panel !== null )
             {
                 var _panel = this._params._panel;
                 _panel._group.tl.moveTo( 
@@ -291,7 +292,7 @@ CMainLogicScreen = function()
         var _tips_message = [
             "TIPS: ",
             "はじめはロボットを動かすところから始めましょう。",
-            "「歩く」「走る」パネルをセットし、",
+            "「歩く」または「走る」パネルをセットし、",
             "「スタート」を押すとロボットは動き始めます。",
             "目的地までたどり着くとゴールです！"
         ];
