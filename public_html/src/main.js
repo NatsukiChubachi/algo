@@ -11,8 +11,6 @@ var _gCommon = new CCommon();
 // リソースパスの定義
 var _gAssetResource = [];
 _gAssetResource = {
-    sBgLPath: "Resources/Textures/UI/BG/SGJ_background_L_02.png",
-    sBgRPath: "Resources/Textures/UI/BG/SGJ_background_R_02.png",
     sGoalPath: "Resources/Textures/Items/goal.png",
     sRobotWork: "Resources/Textures/Character/robot_walk_s.png",
     sDragButton: "Resources/Textures/UI/Buttons/B_Active.png",
@@ -57,8 +55,6 @@ window.onload = function()
     
     // preload関数でゲーム中に必要なリソースをロードする
     game.preload([
-        _gAssetResource.sBgLPath,
-        _gAssetResource.sBgRPath,
         _gAssetResource.sGoalPath,
         _gAssetResource.sRobotWork,
         _gAssetResource.sDragButton,
