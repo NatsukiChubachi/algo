@@ -8,6 +8,9 @@ var _gGame = null;
 var _gScene = null;
 var _gCommon = new CCommon();
 
+var _gTotalStage = 1;
+var _gCurrentStage = 1;
+
 // リソースパスの定義
 var _gAssetResource = [];
 _gAssetResource = {
@@ -47,6 +50,28 @@ var isGoal = false;
  */
 window.onload = function()
 {
+    // JSONファイルを読み込み、パラメータをゲームに適用する
+    var strJsonPath = "./data/data_common.txt";
+    httpObj = new XMLHttpRequest();
+    httpObj.open("get", strJsonPath, true);
+    httpObj.onload = function()
+    {
+        var myData = JSON.parse(this.responseText);
+        /*
+        var txt = "";
+        for (var i=0; i<myData.item.length; i++)
+        {
+            txt = txt + myData.item[i].itemName + "　" + myData.item[i].itemPrice+"円<br>";
+        }
+        alert( txt );
+        */
+        
+        alert( myData.item[0].TotalStage );
+        _gTotalStage = myData.item[0].TotalStage;
+    };
+    
+    httpObj.send(null);
+    
     // Coreクラスの初期化、画面サイズを指定する
     // ゲーム処理のFPS値（秒間の更新回数）を指定する
     var game = new Core(960, 540);

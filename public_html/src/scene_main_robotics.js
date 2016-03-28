@@ -125,10 +125,19 @@ CMainRoboticsScreen = function()
                     {
                         // 今の画面の廃棄
                         _gGame.popScene();
-                        
-                        // タイトル画面に戻る
-                        var _title = new CTitleScreen;
-                        _title.CreateScene();
+
+                        _gCurrentStage++;
+                        if ( _gTotalStage < _gCurrentStage )
+                        {
+                            // タイトル画面に戻る
+                            var _title = new CTitleScreen;
+                            _title.CreateScene();
+                        }
+                        else
+                        {
+                            var _demo = new CDemoScreen;
+                            _demo.CreateScene();
+                        }
                     });
                 }
                 else

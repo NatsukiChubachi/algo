@@ -201,7 +201,7 @@ CMainLogicScreen = function()
         this._MainLogic_Group = _group;
 
         // 背景の作成
-        _tmp = _gCommon.CreateSprite( 0, 0, 960, 540 );
+        _tmp = _gCommon.CreateSprite( 200, 0, 960, 540 );
         _tmp.image = _gGame.assets[ _gAssetResource.sBgSGJ_background_L_02 ];
 
         _group.moveTo( -5000, 0 );
@@ -218,6 +218,19 @@ CMainLogicScreen = function()
         
         _group.addChild( _tmp );
 
+        // ステージ名
+        _tmp = _gCommon.CreateLabel( 10+2, 10+2, "Stage : " + _gCurrentStage );
+        _tmp.width = 960;
+        _tmp.font = "32px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+        _tmp.color = "#000000";
+        _group.addChild( _tmp );
+        
+        _tmp = _gCommon.CreateLabel( 10, 10, "Stage : " + _gCurrentStage );
+        _tmp.width = 960;
+        _tmp.font = "32px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+        _tmp.color = "#FFFFFF";
+        _group.addChild( _tmp );
+        
         // ロジックパネルの作成
         _tmp = this.CreateLogicPanel( 50, 50, this._gLogicData[0] );
         _group.addChild( _tmp );

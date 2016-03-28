@@ -1,0 +1,23 @@
+{
+  "item":[
+    {
+      "TotalStage":3
+    },
+    {
+      "itemCode":91,
+      "itemName":"塩ラーメン",
+      "itemPrice":300
+    },
+    {
+      "itemCode":94,
+      "itemName":"味噌ラーメン",
+      "itemPrice":290
+    },
+    {
+      "itemCode":95,
+      "itemName":"豚骨ラーメン",
+      "itemPrice":320
+    }
+  ]
+}
+
