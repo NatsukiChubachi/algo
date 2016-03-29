@@ -1,6 +1,17 @@
 /* 
  * ロボ動作部分
  */
+/*
+var _gGame = null;
+var _gScene = null;
+var _gCommon = new CCommon();
+
+var _gTotalStage = 1;
+var _gCurrentStage = 1;
+var _gLogicData = null;
+var _gStageContents = null;
+*/
+
 CMainRoboticsScreen = function()
 {
     this.CreateScene = function()
@@ -142,14 +153,18 @@ CMainRoboticsScreen = function()
                 }
                 else
                 {
-                    this.x += 3;
+                    // this.x += 3;
                     
                     // ※
                     // パネルロジックがセットされているとき、その処理を用いで
                     // 動作に追加処理する
-                    if ( _gLogic !== null )
+                    if ( 
+                        _gLogic[0] !== null &&
+                        _gLogic[1] !== null 
+                        )
                     {
-                        _gLogic( this );
+                        var _target = _gLogic[0]( this );   // 一つ目のロジックで「対象」を決定する
+                        _gLogic[1]( _target );              // 二つ目のロジックで「行動」を決定する
                     }
                 }
             }

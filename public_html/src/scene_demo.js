@@ -1,8 +1,16 @@
 /*
  * デモ画面
  */
-/* var _gGame;*/
-/* var _gCommon;*/
+/*
+var _gGame = null;
+var _gScene = null;
+var _gCommon = new CCommon();
+
+var _gTotalStage = 1;
+var _gCurrentStage = 1;
+var _gLogicData = null;
+var _gStageContents = null;
+*/
 
 CDemoScreen = function()
 {

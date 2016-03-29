@@ -38,7 +38,7 @@
       "name": "「ロボット」",
       "info": "ロボットが",
       "type": 0,
-      "func": "function( e ){ e.x = e.x + 3; }"
+      "func": "function( e ){ return e; }"
     },
     {
       "name": "「もし」",

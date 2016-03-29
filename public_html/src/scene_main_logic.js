@@ -1,41 +1,22 @@
 /*
  * メインロジック画面
  */
-_gLogic = null;
+/*
+var _gGame = null;
+var _gScene = null;
+var _gCommon = new CCommon();
+
+var _gTotalStage = 1;
+var _gCurrentStage = 1;
+var _gLogicData = null;
+var _gStageContents = null;
+*/
+
+//_gLogic = null;
+_gLogic = [];
 
 CMainLogicScreen = function()
 {
-    /**
-     * ロジックパネルの作成
-     */
-    /*
-    this._gLogicData = [];
-    this._gLogicData[ 0 ] = {
-        name: "「歩く」",
-        info: "前へ歩きます",
-        type: 1,
-        func: function( e ){ e.x = e.x + 3; }
-    };
-    this._gLogicData[ 1 ] = {
-        name: "「走る」",
-        info: "早く進みます",
-        type: 1,
-        func: function( e ){ e.x = e.x + 9; }
-    };
-    this._gLogicData[ 2 ] = {
-        name: "「ロボット」",
-        info: "ロボットが",
-        type: 0,
-        func: function( e ){ e.x = e.x + 3; }
-    };
-    this._gLogicData[ 3 ] = {
-        name: "「もし」",
-        info: "～ならば",
-        type: 1,
-        func: function( e ){ e.x = e.x + 3; }
-    };
-    */
-    
     /**
      * ロジックパネルの作成
      */
@@ -94,15 +75,16 @@ CMainLogicScreen = function()
         _itemSprite.addEventListener("touchstart",
         function( e )
         {
+            // 現在ドラッグムーブ状態か？
             if ( this._params._iDragFlag === true )
             {
                 return;
             }
+            
+            // クリックしたパネルをドラッグムーブ状態にする
             this._params._iDragFlag = true;
             this._group._params._iDragOffsetX = this._group.x - e.x;
             this._group._params._iDragOffsetY = this._group.y - e.y;
-            
-            _gLogic = this._group._params._LogicData.func;
         });
 
         // イベント
@@ -110,10 +92,12 @@ CMainLogicScreen = function()
         _itemSprite.addEventListener("touchmove",
         function( e )
         {
+            // ドラッグムーブ状態のパネル位置の調整
             if ( this._params._iDragFlag === false ) return;
             this._group.x = e.x + this._group._params._iDragOffsetX;
             this._group.y = e.y + this._group._params._iDragOffsetY;
 
+            // パネル穴との位置のあたり判定
             var iCount = this._params._hole.length;
             for ( var i=0; i<iCount; i++ )
             {
@@ -125,12 +109,18 @@ CMainLogicScreen = function()
                     this._group._y < this._params._hole[i]._y + 110
                 )
                 {
+                    // パネルがセット状態でなく、且つパネル穴付近の場合は
+                    // そのパネル穴にセットされる
                     this._group._x = this._params._hole[i].x;
                     this._group._y = this._params._hole[i].y;
                     this._params._iDragFlag = false;
 
                     var _hole = this._params._hole[i];
                     _hole._sprite._params._panel = this;
+
+                    // セットした穴番号にロジックがセットされる
+                    _gLogic[i] = this._group._params._LogicData.func;
+                    
                     break;
                 }
             }
@@ -187,8 +177,10 @@ CMainLogicScreen = function()
         _itemSprite.addEventListener("touchstart", 
         function()
         {
+            // パネルがセットされている場合
             if ( this._params._panel !== null )
             {
+                // セットされているパネルを初期位置に戻す
                 var _panel = this._params._panel;
                 _panel._group.tl.moveTo( 
                     _panel._params._iStartPosX,
@@ -307,26 +299,35 @@ CMainLogicScreen = function()
         _tmp._params = [];
         _tmp._params._MainLogic_Group = this._MainLogic_Group;
         _tmp._params._hole = this._CoupleingHole;
+        _tmp._params._enable = false;
         
         _tmp.addEventListener("enterframe", 
         function()
         {
+            this._params._enable = true;
+            for ( var i=0; i<this._params._hole.length; i++ )
+            {
+                if ( this._params._hole[i]._sprite._params._panel === null )    
+                {
+                    this._params._enable = false;
+                }
+            }
+            
+            if ( this._params._enable === true ) this.opacity = 1.0
+            else this.opacity = 0.5;
+            /*
             var _panel = this._params._hole[ 0 ]._sprite._params._panel;
             if ( _panel === null ) this.opacity = 0.5;
             else this.opacity = 1.0;
+            */
         });
         
         _tmp.addEventListener("touchstart",
         function()
         {
-            if ( this._params._hole[ 0 ]._sprite._params._panel === null ) return;
+            //if ( this._params._hole[ 0 ]._sprite._params._panel === null ) return;
+            if ( this._params._enable === false ) return;
             
-            /*
-            _gLogic = [];
-            _gLogic[0] = this._params._hole[0]._sprite._group._params._LogicData.func;
-            _gLogic[1] = this._params._hole[1]._sprite._group._params._LogicData.func;
-            */
-
             this._params._MainLogic_Group.tl
             .moveTo( -550.0, 0.0, 30 )
             .then( 
@@ -342,16 +343,7 @@ CMainLogicScreen = function()
         _group.addChild( _tmp );
         
         // TIPSメッセージの追加
-        /*
-        var _tips_message = [
-            "TIPS: ",
-            "はじめはロボットを動かすところから始めましょう。",
-            "「歩く」または「走る」パネルをセットし、",
-            "「スタート」を押すとロボットは動き始めます。",
-            "目的地までたどり着くとゴールです！"
-        ];
-        */
-       var _tips_message = _gStageContents[_gCurrentStage-1].tips_message;
+        var _tips_message = _gStageContents[_gCurrentStage-1].tips_message;
         
         for ( var i=0; i<_tips_message.length; i++ )
         {

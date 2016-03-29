@@ -54,23 +54,14 @@ var isGoal = false;
 window.onload = function()
 {
     // JSONファイルを読み込み、パラメータをゲームに適用する
-    var strJsonPath = "./data/data_common.txt";
-    httpObj = new XMLHttpRequest();
-    httpObj.open("get", strJsonPath, true);
-    httpObj.onload = function()
+    var funcSetter = function( data )
     {
-        var parser = function(k,v){return v.toString().indexOf('function') === 0 ? eval('('+v+')') : v; };
-        var myData = JSON.parse(this.responseText, parser);
-        
-        // alert( myData.item[0].TotalStage );
-        _gTotalStage = myData.TotalStage;
-        _gLogicData = myData.LogicData;
-        _gStageContents = myData.StageContents;
-        
-        _gLogicPanel = myData.LogicPanel;
+        _gTotalStage = data.TotalStage;
+        _gLogicData = data.LogicData;
+        _gStageContents = data.StageContents;
+        _gLogicPanel = data.LogicPanel;
     };
-    
-    httpObj.send(null);
+    _gCommon.ReadJsonFile( "./data/data_common.txt", funcSetter );
     
     // Coreクラスの初期化、画面サイズを指定する
     // ゲーム処理のFPS値（秒間の更新回数）を指定する
