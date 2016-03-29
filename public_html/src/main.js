@@ -66,6 +66,8 @@ window.onload = function()
         _gTotalStage = myData.TotalStage;
         _gLogicData = myData.LogicData;
         _gStageContents = myData.StageContents;
+        
+        _gLogicPanel = myData.LogicPanel;
     };
     
     httpObj.send(null);
