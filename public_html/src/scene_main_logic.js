@@ -12,24 +12,28 @@ CMainLogicScreen = function()
     this._gLogicData[ 0 ] = {
         name: "「歩く」",
         info: "前へ歩きます",
+        type: 1,
         func: function( e ){ e.x = e.x + 3; }
     };
     this._gLogicData[ 1 ] = {
         name: "「走る」",
         info: "早く進みます",
+        type: 1,
         func: function( e ){ e.x = e.x + 9; }
     };
     this._gLogicData[ 2 ] = {
-        name: "「もし」",
-        info: "～ならば",
+        name: "「ロボット」",
+        info: "ロボットが",
+        type: 0,
         func: function( e ){ e.x = e.x + 3; }
     };
     this._gLogicData[ 3 ] = {
-        name: "「ロボット」",
-        info: "ロボットを指します",
+        name: "「もし」",
+        info: "～ならば",
+        type: 1,
         func: function( e ){ e.x = e.x + 3; }
     };
-
+   
     /**
      * ロジックパネルの作成
      */
@@ -68,6 +72,7 @@ CMainLogicScreen = function()
         _itemSprite._params._iDragOffsetY = 0;
         _itemSprite._params._iStartPosX = x;
         _itemSprite._params._iStartPosY = y;
+        _itemSprite._params._type = logic.type;
 
         _itemSprite._params._hole = this._CoupleingHole;
         _itemSprite._params._MainLogic_Group = this._MainLogic_Group;
@@ -101,6 +106,7 @@ CMainLogicScreen = function()
             for ( var i=0; i<iCount; i++ )
             {
                 if ( 
+                    this._params._hole[i]._sprite._params._type === this._params._type &&
                     this._group._x > this._params._hole[i]._x - 10 &&
                     this._group._x < this._params._hole[i]._x + 110 &&
                     this._group._y > this._params._hole[i]._y - 10 &&
@@ -134,7 +140,7 @@ CMainLogicScreen = function()
     /**
      * ロジックパネル穴の作成
      */
-    this.CreateLogicCouplingHole = function( x, y, pos)
+    this.CreateLogicCouplingHole = function( x, y, pos, type )
     {
         var _itemGroup;
         var _itemSprite;
@@ -144,7 +150,10 @@ CMainLogicScreen = function()
 
         // ボタン下地部分の作成
         _itemSprite = _gCommon.CreateSprite( 0, 0, 100, 100 );
-        _itemSprite.image = _gGame.assets[ _gAssetResource.sDragFrame ];
+        
+        if ( type === 0 ) _itemSprite.image = _gGame.assets[ _gAssetResource.sDragFrame_Blue ];
+        else _itemSprite.image = _gGame.assets[ _gAssetResource.sDragFrame ];
+        
         _itemGroup.addChild( _itemSprite );
 
         // パラメータのセット
@@ -158,6 +167,7 @@ CMainLogicScreen = function()
         _itemSprite._params._iDragOffsetX = 0;
         _itemSprite._params._iDragOffsetY = 0;
         _itemSprite._params._panel = null;
+        _itemSprite._params._type = type;
         
         _itemGroup._sprite = _itemSprite;
         
@@ -239,19 +249,24 @@ CMainLogicScreen = function()
         _tmp = this.CreateLogicPanel( 170, 50, this._gLogicData[1] );
         _group.addChild( _tmp );
 
-//        // ロジックパネルの作成
-//        _tmp = this.CreateLogicPanel( 290, 50, this._gLogicData[2] );
-//        _group.addChild( _tmp );
+        // ロジックパネルの作成
+        _tmp = this.CreateLogicPanel( 290, 50, this._gLogicData[2] );
+        _group.addChild( _tmp );
 
 //        // ロジックパネルの作成
 //        _tmp = this.CreateLogicPanel( 410, 50, this._gLogicData[3] );
 //        _group.addChild( _tmp );
 
         // ロジックホールの作成
-        _tmp = this.CreateLogicCouplingHole( 100, 250, null );
+        _tmp = this.CreateLogicCouplingHole( 100, 250, null, 0 );
         _group.addChild( _tmp );
         this._CoupleingHole[ 0 ] = _tmp;
 
+        // ロジックホールの作成
+        _tmp = this.CreateLogicCouplingHole( 250, 250, null, 1 );
+        _group.addChild( _tmp );
+        this._CoupleingHole[ 1 ] = _tmp;
+        
 //        // ロジックホールの作成
 //        _tmp = this.CreateLogicCouplingHole( 200, 250, null );
 //        _group.addChild( _tmp );

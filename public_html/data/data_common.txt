@@ -18,6 +18,32 @@
       "itemName":"豚骨ラーメン",
       "itemPrice":320
     }
+  ],
+  "LogicPanel":[
+    {
+      "name": "「歩く」",
+      "info": "前へ歩きます",
+      "type": 1,
+      "func": "function( e ){ e.x = e.x + 3; }"
+    },
+    {
+      "name": "「走る」",
+      "info": "早く進みます",
+      "type": 1,
+      "func": "function( e ){ e.x = e.x + 9; }"
+    },
+    {
+      "name": "「ロボット」",
+      "info": "ロボットが",
+      "type": 0,
+      "func": "function( e ){ e.x = e.x + 3; }"
+    },
+    {
+      "name": "「もし」",
+      "info": "～ならば",
+      "type": 1,
+      "func": "function( e ){ e.x = e.x + 3; }"
+    }
   ]
 }
 

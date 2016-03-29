@@ -10,6 +10,7 @@ var _gCommon = new CCommon();
 
 var _gTotalStage = 1;
 var _gCurrentStage = 1;
+var _gLogicPanel = null;
 
 // リソースパスの定義
 var _gAssetResource = [];
@@ -19,6 +20,7 @@ _gAssetResource = {
     sDragButton: "Resources/Textures/UI/Buttons/B_Active.png",
     sDragButtonActive: "Resources/Textures/UI/Buttons/B_NonActive.png",
     sDragFrame: "Resources/Textures/png/line.png",
+    sDragFrame_Blue: "Resources/Textures/png/line_blue.png",
     sYajirushi: "Resources/Textures/png/yajirushi.png",
     sClearBgPath: "Resources/Textures/UI/BG/background_gameclear.png",
     sStartBtn: "Resources/B_Start.png",
@@ -66,8 +68,10 @@ window.onload = function()
         alert( txt );
         */
         
-        alert( myData.item[0].TotalStage );
+        // alert( myData.item[0].TotalStage );
         _gTotalStage = myData.item[0].TotalStage;
+        
+        _gLogicPanel = myData.LogicPanel;
     };
     
     httpObj.send(null);
@@ -85,6 +89,7 @@ window.onload = function()
         _gAssetResource.sDragButton,
         _gAssetResource.sDragButtonActive,
         _gAssetResource.sDragFrame,
+        _gAssetResource.sDragFrame_Blue,
         _gAssetResource.sYajirushi,
         _gAssetResource.sClearBgPath,
         _gAssetResource.sStartBtn,
