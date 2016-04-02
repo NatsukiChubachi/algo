@@ -1,51 +1,43 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * デモ画面
  */
+/* var _gGame;*/
+/* var _gCommon;*/
 
-
-CreateDemoScreen = function()
+CDemoScreen = function()
 {
-    this.demoCount = 0;
-
-    var _tmp;
-
-    // デモ画面
-    var _demo = new Scene();
-    //_demo.backgroundColor = "#66FF66";
-
-    _tmp = _gCommon.CreateSprite( 0, 0, 960, 540 );
-    _tmp.image = _gGame.assets[ bgBackGround ];
-    _demo.addChild( _tmp );
-
     /*
-    _tmp = this._common.CreateLabel( 10, 10, "DEMO_SCREEN." );
-    _demo.addChild( _tmp );
-    */
+     * シーン作成
+     */
+    this.CreateScene = function()
+    {
+        var _tmp;
 
-    _tmp = _gCommon.CreateSprite( 0, 0, 960, 540 );
-    _tmp.image = _gGame.assets[ introStage1 ];
-    _tmp.tl.fadeIn( 30 );
-    _demo.addChild( _tmp );
+        // デモ画面
+        var _demo = new Scene();
 
-    /*
-    _tmp = new Sprite(960, 540);
-    _tmp.image = game.assets[introStage1];
-    _tmp.x = 0;
-    _tmp.y = 0;
-    _demo.addChild( _tmp );
-    */
+        // 背景画面の作成
+        _tmp = _gCommon.CreateSprite( 0, 0, 960, 540 );
+        _tmp.image = _gGame.assets[ _gAssetResource.sBgBackGround ];
+        _demo.addChild( _tmp );
 
-    _tmp = _gCommon.CreateSprite( 480 - 200, 280, 400, 165 );
-    _tmp.image = _gGame.assets[ startBtn ];
-    _tmp.tl.moveTo( 600, 400, 10 ).and().scaleTo( 0.5, 0.5, 10 );
-    _demo.addChild( _tmp );
+        // 文字字幕の作成
+        _tmp = _gCommon.CreateSprite( 0, 0, 960, 540 );
+        _tmp.image = _gGame.assets[ _gAssetResource.sIntroStage1 ];
+        _tmp.tl.fadeIn( 30 );
+        _demo.addChild( _tmp );
 
-    _tmp.addEventListener( "touchstart", function(){
-        /*
-        if ( this.demoCount === 0 )
+        // 「開始」ボタンの作成
+        _tmp = _gCommon.CreateSprite( 480 - 200, 280, 400, 165 );
+        _tmp.image = _gGame.assets[ _gAssetResource.sStartBtn ];
+        _tmp.tl.moveTo( 600, 400, 10 ).and().scaleTo( 0.5, 0.5, 10 );
+        _demo.addChild( _tmp );
+
+        // 「開始」ボタンが押された時のイベント処理
+        _tmp.addEventListener( "touchstart", 
+        function()
         {
+<<<<<<< HEAD
             _tmp = this._common.CreateLabel( 10, 50, "幕間１" );
             _demo.addChild( _tmp );
         }
@@ -85,5 +77,19 @@ CreateDemoScreen = function()
     _demo._common = this._common;
 
     _gGame.pushScene( _demo );
-};
+=======
+            // この画面を廃棄し、メイン画面へ遷移する
+            _gGame.popScene();
 
+            var _mainrobo = new CMainRoboticsScreen();
+            _mainrobo.CreateScene();
+            
+            var _mainlogic = new CMainLogicScreen();
+            _mainlogic.CreateScene();
+        });
+
+        // 作成した画面をゲームへ追加する
+        _gGame.pushScene( _demo );
+    };
+>>>>>>> develop
+};
