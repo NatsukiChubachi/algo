@@ -1,7 +1,7 @@
 /*
  * メインロジック画面
  */
-_gLogic = null;
+_gSelLogicData = null;
 
 CMainLogicScreen = function()
 {
@@ -11,12 +11,12 @@ CMainLogicScreen = function()
     this._gLogicData = [];
     this._gLogicData[ 0 ] = {
         name: "「歩く」",
-        info: "前へ歩きます",
+        info: "前へ歩きます<br>(ゴミを拾う)",
         func: function( e ){ e.x = e.x + 3; }
     };
     this._gLogicData[ 1 ] = {
         name: "「走る」",
-        info: "早く進みます",
+        info: "早く進みます<br>(ゴミを無視)",
         func: function( e ){ e.x = e.x + 9; }
     };
     this._gLogicData[ 2 ] = {
@@ -85,7 +85,7 @@ CMainLogicScreen = function()
             this._group._params._iDragOffsetX = this._group.x - e.x;
             this._group._params._iDragOffsetY = this._group.y - e.y;
             
-            _gLogic = this._group._params._LogicData.func;
+            _gSelLogicData = this._group._params._LogicData;
         });
 
         // イベント

@@ -30,6 +30,29 @@ CMainRoboticsScreen = function()
         //  bgm.play();
         //});
 
+        // 空き缶
+        var SteelCan = new Sprite(76, 140);
+        var AlumiCan = new Sprite(61, 110);
+
+        /**
+         * Sprite.image {Object}
+         * Core#preload で指定されたファイルは、Core.assets のプロパティとして格納される。
+         * Sprite.image にこれを代入することで、画像を表示することができる
+         */
+        SteelCan.image = _gGame.assets[ _gAssetResource.sItemSteelCan ];
+        SteelCan.x = 350;
+        SteelCan.y = 150;
+        
+        SteelCan._params = [];
+        SteelCan._params._scene = _scene;
+
+        AlumiCan.image = _gGame.assets[ _gAssetResource.sItemAlumiCan ];
+        AlumiCan.x = 500;
+        AlumiCan.y = 300;
+        
+        AlumiCan._params = [];
+        AlumiCan._params._scene = _scene;
+
         // ロボット
         var robot = new Sprite(150, 200);
 
@@ -44,7 +67,7 @@ CMainRoboticsScreen = function()
         
         robot._params = [];
         robot._params._scene = _scene;
-        
+                
         /**
          * Group#addChild(node) {Function}
          * オブジェクトをノードツリーに追加するメソッド。
@@ -55,6 +78,8 @@ CMainRoboticsScreen = function()
          */
         _scene.addChild( backgroundR );
         _scene.addChild( goal );
+        _scene.addChild( SteelCan );
+        _scene.addChild( AlumiCan );
         _scene.addChild( robot );
 
         /**
@@ -79,6 +104,33 @@ CMainRoboticsScreen = function()
             this.frame = (this.age / 4) % 8 + 1;
             if(isGoal)
             {
+                // 空き缶との衝突判定
+                if(SteelCan && this.intersect(SteelCan))
+                {
+                    if (_gSelLogicData.name === "「歩く」")
+                    {
+                        console.log("空き缶（スチール製）HIT！")
+                        alert("偉い！空き缶（スチール製）を拾ったね！");
+                        // 空き缶の削除
+                        this._params._scene.removeChild( SteelCan );
+                        delete SteelCan;
+                        SteelCan = null;
+                    }
+                }
+                if(AlumiCan && this.intersect(AlumiCan))
+                {
+                    if (_gSelLogicData.name === "「歩く」")
+                    {
+                        console.log("空き缶（アルミ製）HIT！")
+                        alert("偉い！空き缶（アルミ製）を拾ったね！")
+                        // 空き缶の削除
+                        this._params._scene.removeChild( AlumiCan );
+                        delete AlumiCan;
+                        AlumiCan = null;
+                    }
+                }
+                
+                // ゴールに達したか？
                 if(this.x >= 775)
                 {
                     var _scene = this._params._scene;
@@ -138,9 +190,9 @@ CMainRoboticsScreen = function()
                     // ※
                     // パネルロジックがセットされているとき、その処理を用いで
                     // 動作に追加処理する
-                    if ( _gLogic !== null )
+                    if ( _gSelLogicData.func !== null )
                     {
-                        _gLogic( this );
+                        _gSelLogicData.func( this );
                     }
                 }
             }
