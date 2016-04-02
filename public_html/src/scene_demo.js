@@ -37,47 +37,6 @@ CDemoScreen = function()
         _tmp.addEventListener( "touchstart", 
         function()
         {
-<<<<<<< HEAD
-            _tmp = this._common.CreateLabel( 10, 50, "幕間１" );
-            _demo.addChild( _tmp );
-        }
-        else if ( this.demoCount === 1 )
-        {
-            _tmp = this._common.CreateLabel( 10, 80, "ロボットとの会話がここで入ります。" );
-            _demo.addChild( _tmp );
-        }
-        else if ( this.demoCount === 2 )
-        {
-            _tmp = this._common.CreateLabel( 10, 110, "会話１「そうだねそうだね」" );
-            _demo.addChild( _tmp );
-        }
-        else if ( this.demoCount === 3 )
-        {
-            _tmp = this._common.CreateLabel( 10, 140, "会話２「こんにちわ」" );
-            _demo.addChild( _tmp );
-        }
-        else if ( this.demoCount === 4 )
-        {
-            _tmp = this._common.CreateLabel( 10, 170, "「ゲームが始まりますよ！」" );
-            _demo.addChild( _tmp );
-        }
-
-        if ( this.demoCount === 5 )
-        {
-            game.popScene();
-        }
-        */
-        _gGame.popScene();
-        this.demoCount++;
-        
-//        CreateScene_MainLogic();
-    });
-
-    _demo.demoCount = 0;
-    _demo._common = this._common;
-
-    _gGame.pushScene( _demo );
-=======
             // この画面を廃棄し、メイン画面へ遷移する
             _gGame.popScene();
 
@@ -91,5 +50,4 @@ CDemoScreen = function()
         // 作成した画面をゲームへ追加する
         _gGame.pushScene( _demo );
     };
->>>>>>> develop
 };
