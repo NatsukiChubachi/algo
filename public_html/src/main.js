@@ -10,24 +10,26 @@ var _gCommon = new CCommon();
 
 var _gTotalStage = 1;
 var _gCurrentStage = 1;
-var _gLogicPanel = null;
+var _gLogicData = null;
+var _gStageContents = null;
 
 // リソースパスの定義
+var _gResourcesDir = "Resources/Textures/"
 var _gAssetResource = [];
 _gAssetResource = {
-    sGoalPath: "Resources/Textures/Items/goal.png",
-    sRobotWork: "Resources/Textures/Character/robot_walk_s.png",
-    sDragButton: "Resources/Textures/UI/Buttons/B_Active.png",
-    sDragButtonActive: "Resources/Textures/UI/Buttons/B_NonActive.png",
-    sDragFrame: "Resources/Textures/png/line.png",
-    sDragFrame_Blue: "Resources/Textures/png/line_blue.png",
-    sYajirushi: "Resources/Textures/png/yajirushi.png",
-    sClearBgPath: "Resources/Textures/UI/BG/background_gameclear.png",
-    sStartBtn: "Resources/B_Start.png",
-    sBgTitle: "Resources/background_title.png",
-    sBgBackGround: "Resources/background.png",
-    sIntroStage1: "Resources/intro_stage1.png",
-    sBgSGJ_background_L_02: "Resources/SGJ_background_L_02.png"
+    sGoalPath: _gResourcesDir + "Items/goal.png",
+    sRobotWork: _gResourcesDir + "Character/robot_walk_s.png",
+    sDragButton: _gResourcesDir + "UI/Buttons/B_Active.png",
+    sDragButtonActive: _gResourcesDir + "UI/Buttons/B_NonActive.png",
+    sDragFrame: _gResourcesDir + "png/line.png",
+    sDragFrame_Blue: _gResourcesDir + "png/line_blue.png",
+    sYajirushi: _gResourcesDir + "png/yajirushi.png",
+    sClearBgPath: _gResourcesDir + "UI/BG/background_gameclear.png",
+    sStartBtn: _gResourcesDir + "B_Start.png",
+    sBgTitle: _gResourcesDir + "background_title.png",
+    sBgBackGround: _gResourcesDir + "background.png",
+    sIntroStage1: _gResourcesDir + "intro_stage1.png",
+    sBgSGJ_background_L_02: _gResourcesDir + "SGJ_background_L_02.png"
 };
 
 var _gStageClearMessages = {
@@ -58,22 +60,14 @@ window.onload = function()
     httpObj.open("get", strJsonPath, true);
     httpObj.onload = function()
     {
-        var myData = JSON.parse(this.responseText);
-        /*
-        var txt = "";
-        for (var i=0; i<myData.item.length; i++)
-        {
-            txt = txt + myData.item[i].itemName + "　" + myData.item[i].itemPrice+"円<br>";
-        }
-        alert( txt );
-        */
+        var parser = function(k,v){return v.toString().indexOf('function') === 0 ? eval('('+v+')') : v; };
+        var myData = JSON.parse(this.responseText, parser);
         
         // alert( myData.item[0].TotalStage );
-        _gTotalStage = myData.item[0].TotalStage;
-        
-        _gLogicPanel = myData.LogicPanel;
+        _gTotalStage = myData.TotalStage;
+        _gLogicData = myData.LogicData;
+        _gStageContents = myData.StageContents;
     };
-    
     httpObj.send(null);
     
     // Coreクラスの初期化、画面サイズを指定する

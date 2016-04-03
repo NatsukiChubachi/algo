@@ -79,7 +79,10 @@ CMainRoboticsScreen = function()
             this.frame = (this.age / 4) % 8 + 1;
             if(isGoal)
             {
-                if(this.x >= 775)
+                var func_goal = _gStageContents[ _gCurrentStage-1 ].func_goal;
+                
+                //if(this.x >= 775)
+                if ( func_goal(this) === true )
                 {
                     var _scene = this._params._scene;
                     

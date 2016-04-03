@@ -8,35 +8,6 @@ CMainLogicScreen = function()
     /**
      * ロジックパネルの作成
      */
-    this._gLogicData = [];
-    this._gLogicData[ 0 ] = {
-        name: "「歩く」",
-        info: "前へ歩きます",
-        type: 1,
-        func: function( e ){ e.x = e.x + 3; }
-    };
-    this._gLogicData[ 1 ] = {
-        name: "「走る」",
-        info: "早く進みます",
-        type: 1,
-        func: function( e ){ e.x = e.x + 9; }
-    };
-    this._gLogicData[ 2 ] = {
-        name: "「ロボット」",
-        info: "ロボットが",
-        type: 0,
-        func: function( e ){ e.x = e.x + 3; }
-    };
-    this._gLogicData[ 3 ] = {
-        name: "「もし」",
-        info: "～ならば",
-        type: 1,
-        func: function( e ){ e.x = e.x + 3; }
-    };
-   
-    /**
-     * ロジックパネルの作成
-     */
     this.CreateLogicPanel = function( x, y, logic )
     {
         var _itemGroup;
@@ -57,6 +28,16 @@ CMainLogicScreen = function()
 
         // ロジックパネル説明の作成
         _itemLabel = _gCommon.CreateLabel( 5, 40, logic.info );
+        _itemGroup.addChild( _itemLabel );
+
+        // ロジックパネル矢印
+        _itemLabel = _gCommon.CreateLabel( 60, 60, "●" );
+        _itemLabel.width = 960;
+        _itemLabel.font = "32px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+        
+        if ( logic.type === 1 ) _itemLabel.color = "#FF4444";
+        else _itemLabel.color = "#4444FF"
+        
         _itemGroup.addChild( _itemLabel );
 
         // パラメータのセット
@@ -229,55 +210,41 @@ CMainLogicScreen = function()
         _group.addChild( _tmp );
 
         // ステージ名
-        _tmp = _gCommon.CreateLabel( 10+2, 10+2, "Stage : " + _gCurrentStage );
+        _tmp = _gCommon.CreateLabel( 10+2, 10+2, "Stage : " + _gCurrentStage + " 「" + _gStageContents[ _gCurrentStage-1 ].title + "」" );
         _tmp.width = 960;
-        _tmp.font = "32px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+        _tmp.font = "28px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
         _tmp.color = "#000000";
         _group.addChild( _tmp );
         
-        _tmp = _gCommon.CreateLabel( 10, 10, "Stage : " + _gCurrentStage );
+        _tmp = _gCommon.CreateLabel( 10, 10, "Stage : " + _gCurrentStage + " 「" + _gStageContents[ _gCurrentStage-1 ].title + "」"  );
         _tmp.width = 960;
-        _tmp.font = "32px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
-        _tmp.color = "#FFFFFF";
+        _tmp.font = "28px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+        _tmp.color = "#AAAAAA";
+        _group.addChild( _tmp );
+
+        // ロジックパネル矢印
+        _tmp = _gCommon.CreateLabel( 205, 250, "→" );
+        _tmp.width = 960;
+        _tmp.font = "64px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
+        _tmp.color = "#FF0000";
         _group.addChild( _tmp );
         
         // ロジックパネルの作成
-        _tmp = this.CreateLogicPanel( 50, 50, this._gLogicData[0] );
-        _group.addChild( _tmp );
+        var _panel = _gStageContents[ _gCurrentStage-1 ].panel;
+        for ( var i=0; i<_panel.length; i++ )
+        {
+            _tmp = this.CreateLogicPanel( 50+(120*i), 50, _gLogicData[ _panel[ i ] ] );
+            _group.addChild( _tmp );
+        }
 
         // ロジックパネルの作成
-        _tmp = this.CreateLogicPanel( 170, 50, this._gLogicData[1] );
-        _group.addChild( _tmp );
-
-        // ロジックパネルの作成
-        _tmp = this.CreateLogicPanel( 290, 50, this._gLogicData[2] );
-        _group.addChild( _tmp );
-
-//        // ロジックパネルの作成
-//        _tmp = this.CreateLogicPanel( 410, 50, this._gLogicData[3] );
-//        _group.addChild( _tmp );
-
-        // ロジックホールの作成
-        _tmp = this.CreateLogicCouplingHole( 100, 250, null, 0 );
-        _group.addChild( _tmp );
-        this._CoupleingHole[ 0 ] = _tmp;
-
-        // ロジックホールの作成
-        _tmp = this.CreateLogicCouplingHole( 250, 250, null, 1 );
-        _group.addChild( _tmp );
-        this._CoupleingHole[ 1 ] = _tmp;
-        
-//        // ロジックホールの作成
-//        _tmp = this.CreateLogicCouplingHole( 200, 250, null );
-//        _group.addChild( _tmp );
-//        this._CoupleingHole[ 1 ] = _tmp;
-
-//        // ロジックホールの作成
-//        _tmp = this.CreateLogicCouplingHole( 300, 250, null );
-//        _group.addChild( _tmp );
-//        this._CoupleingHole[ 2 ] = _tmp;
-
-//        this._CoupleingHole[ 0 ]._sprite._params._panel;
+        var _panel_hole = _gStageContents[ _gCurrentStage-1 ].panel_hole;
+        for ( var i=0; i<_panel_hole.length; i++ )
+        {
+            _tmp = this.CreateLogicCouplingHole( 100+(150*i), 250, null, _panel_hole[ i ] );
+            _group.addChild( _tmp );
+            this._CoupleingHole[ i ] = _tmp;
+        }
 
         // スタートボタンの設定
         _tmp = _gCommon.CreateSprite( 350, 400, 400, 165 );
@@ -317,23 +284,15 @@ CMainLogicScreen = function()
         _group.addChild( _tmp );
         
         // TIPSメッセージの追加
-        var _tips_message = [
-            "TIPS: ",
-            "はじめはロボットを動かすところから始めましょう。",
-            "「歩く」または「走る」パネルをセットし、",
-            "「スタート」を押すとロボットは動き始めます。",
-            "目的地までたどり着くとゴールです！"
-        ];
-        
+        var _tips_message = _gStageContents[_gCurrentStage-1].tips_message;
         for ( var i=0; i<_tips_message.length; i++ )
         {
-            _tmp = _gCommon.CreateLabel( 80, 420+(20*i), _tips_message[i] );
+            _tmp = _gCommon.CreateLabel( 60, 420+(20*i), _tips_message[i] );
             _tmp.width = 500;
             _tmp.font = "14px 'Consolas', 'Monaco', 'ＭＳ ゴシック'";
             _tmp.color = "#000000";
             _group.addChild( _tmp );
         }
-        
         _scene.addChild( _group );    
         
         // シーンを画面に挿入する
