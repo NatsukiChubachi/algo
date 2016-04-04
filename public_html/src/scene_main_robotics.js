@@ -41,21 +41,21 @@ CMainRoboticsScreen = function()
         //  bgm.play();
         //});
 
-        // ロボット
-        var robot = new Sprite(150, 200);
-
         /**
          * Sprite.image {Object}
          * Core#preload で指定されたファイルは、Core.assets のプロパティとして格納される。
          * Sprite.image にこれを代入することで、画像を表示することができる
          */
+        // ロボット
+        var robot = new Sprite(150, 200);
+
         robot.image = _gGame.assets[ _gAssetResource.sRobotWork ];
         robot.x = 150;
         robot.y = 150;
         
         robot._params = [];
         robot._params._scene = _scene;
-        
+
         /**
          * Group#addChild(node) {Function}
          * オブジェクトをノードツリーに追加するメソッド。
@@ -66,8 +66,31 @@ CMainRoboticsScreen = function()
          */
         _scene.addChild( backgroundR );
         _scene.addChild( goal );
+
+        // オブジェクト
+        for( var i=0; i<_gStageContents[ _gCurrentStage-1 ].object.length; i++)
+        {
+            var _object = _gStageContents[ _gCurrentStage-1 ].object[ i ];
+            
+            // アルミ缶
+            if ( _object[ i ] === "AlumiCan" )
+            {
+                var _tmp = _gCommon.CreateSprite( _object[1], _object[2], 61, 110 );
+                _tmp.image = _gGame.assets[ _gAssetResource.sAlumiCan ];
+                _scene.addChild( _tmp );
+            }
+            else if ( _object[ i ] === "SteelCan" )
+            {
+                var _tmp = _gCommon.CreateSprite( _object[1], _object[2], 76, 142 );
+                _tmp.image = _gGame.assets[ _gAssetResource.sSteelCan ];
+                _scene.addChild( _tmp );
+            }
+        }
+        
         _scene.addChild( robot );
 
+        
+        
         /**
          * EventTarget#addEventListener(event, listener)
          * イベントに対するリスナを登録する。

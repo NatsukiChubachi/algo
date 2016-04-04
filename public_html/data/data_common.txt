@@ -36,6 +36,8 @@
         0, 1
       ],
       "object":[
+        [ "AlumiCan", 300, 150 ],
+        [ "SteelCan", 450, 250 ]
       ],
       "func_goal": "function( e ){ if( e.x >= 775 ){ return true; } else { return false; } }",
       "tips_message":[

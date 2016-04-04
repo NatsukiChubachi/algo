@@ -29,7 +29,9 @@ _gAssetResource = {
     sBgTitle: _gResourcesDir + "background_title.png",
     sBgBackGround: _gResourcesDir + "background.png",
     sIntroStage1: _gResourcesDir + "intro_stage1.png",
-    sBgSGJ_background_L_02: _gResourcesDir + "SGJ_background_L_02.png"
+    sBgSGJ_background_L_02: _gResourcesDir + "SGJ_background_L_02.png",
+    sAlumiCan: _gResourcesDir + "CanCan/AlumiCan.png",
+    sSteelCan: _gResourcesDir + "CanCan/SteelCan.png"
 };
 
 var _gStageClearMessages = {
@@ -90,7 +92,9 @@ window.onload = function()
         _gAssetResource.sBgTitle,
         _gAssetResource.sBgBackGround,
         _gAssetResource.sIntroStage1,
-        _gAssetResource.sBgSGJ_background_L_02
+        _gAssetResource.sBgSGJ_background_L_02,
+        _gAssetResource.sAlumiCan,
+        _gAssetResource.sSteelCan
     ]);
 
     /**
