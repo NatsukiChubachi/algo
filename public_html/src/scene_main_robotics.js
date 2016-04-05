@@ -56,6 +56,10 @@ CMainRoboticsScreen = function()
         robot._params = [];
         robot._params._scene = _scene;
 
+        robot._params._canPickUp = true;
+        robot._params._countPickUp_Alumi = 0;
+        robot._params._countPickUp_Steel = 0;
+        
         /**
          * Group#addChild(node) {Function}
          * オブジェクトをノードツリーに追加するメソッド。
@@ -73,16 +77,59 @@ CMainRoboticsScreen = function()
             var _object = _gStageContents[ _gCurrentStage-1 ].object[ i ];
             
             // アルミ缶
-            if ( _object[ i ] === "AlumiCan" )
+            if ( _object[ 0 ] === "AlumiCan" )
             {
+                // オブジェクトの作成
                 var _tmp = _gCommon.CreateSprite( _object[1], _object[2], 61, 110 );
                 _tmp.image = _gGame.assets[ _gAssetResource.sAlumiCan ];
+                
+                _tmp.addEventListener("enterframe", 
+                function()
+                {
+                    // ロボットが特定範囲内に入った場合
+                    if ( 
+                        robot._params._canPickUp === true &&
+                        robot.within( this, 75 ) 
+                    )
+                    {
+                        this.tl.fadeOut( 30 ).and().moveBy( 0, -100, 30 )
+                                .then( 
+                                    function(){ 
+                                        _scene.removeChild( this );
+                                    }
+                                );
+                        
+                        robot._params._countPickUp_Alumi++;
+                    }
+                });
+                
                 _scene.addChild( _tmp );
             }
-            else if ( _object[ i ] === "SteelCan" )
+            else if ( _object[ 0 ] === "SteelCan" )
             {
+                // オブジェクトの作成
                 var _tmp = _gCommon.CreateSprite( _object[1], _object[2], 76, 142 );
                 _tmp.image = _gGame.assets[ _gAssetResource.sSteelCan ];
+                
+                _tmp.addEventListener("enterframe", 
+                function()
+                {
+                    // ロボットが特定範囲内に入った場合
+                    if (
+                        robot._params._canPickUp === true &&
+                        robot.within( this, 75 ) 
+                        )
+                    {
+                        this.tl.fadeOut( 30 ).and().moveBy( 0, -100, 30 )
+                                .then( 
+                                    function(){ 
+                                        _scene.removeChild( this );
+                                    }
+                                );
+                        robot._params._countPickUp_Steel++;
+                    }
+                });
+                
                 _scene.addChild( _tmp );
             }
         }

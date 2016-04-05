@@ -5,13 +5,13 @@
       "name": "「歩く」",
       "info": "前へ歩きます",
       "type": 1,
-      "func": "function( e ){ e.x = e.x + 3; }"
+      "func": "function( e ){ e.x = e.x + 3; e._params._canPickUp = true; }"
     },
     "act_run": {
       "name": "「走る」",
       "info": "早く進みます",
       "type": 1,
-      "func": "function( e ){ e.x = e.x + 9; e.y = e.y + 5; }"
+      "func": "function( e ){ e.x = e.x + 9; e.y = e.y + 0; e._params._canPickUp = false; }"
     },
     "tgt_robot": {
       "name": "「ロボット」",
@@ -36,8 +36,6 @@
         0, 1
       ],
       "object":[
-        [ "AlumiCan", 300, 150 ],
-        [ "SteelCan", 450, 250 ]
       ],
       "func_goal": "function( e ){ if( e.x >= 775 ){ return true; } else { return false; } }",
       "tips_message":[
@@ -57,6 +55,8 @@
         0, 1
       ],
       "object":[
+        [ "AlumiCan", 300, 150 ],
+        [ "SteelCan", 450, 250 ]
       ],
       "func_goal": "function( e ){ if( e.x >= 775 ){ return true; } else { return false; } }",
       "tips_message":[
@@ -76,6 +76,9 @@
         0, 1
       ],
       "object":[
+        [ "AlumiCan", 300, 150 ],
+        [ "SteelCan", 450, 250 ],
+        [ "SteelCan", 540, 180 ]
       ],
       "func_goal": "function( e ){ if( e.x >= 775 ){ return true; } else { return false; } }",
       "tips_message":[
