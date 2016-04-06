@@ -1,6 +1,17 @@
 /* 
  * ロボ動作部分
  */
+/*
+var _gGame = null;
+var _gScene = null;
+var _gCommon = new CCommon();
+
+var _gTotalStage = 1;
+var _gCurrentStage = 1;
+var _gLogicData = null;
+var _gStageContents = null;
+*/
+
 CMainRoboticsScreen = function()
 {
     this.CreateScene = function()
@@ -30,20 +41,24 @@ CMainRoboticsScreen = function()
         //  bgm.play();
         //});
 
-        // ロボット
-        var robot = new Sprite(150, 200);
-
         /**
          * Sprite.image {Object}
          * Core#preload で指定されたファイルは、Core.assets のプロパティとして格納される。
          * Sprite.image にこれを代入することで、画像を表示することができる
          */
+        // ロボット
+        var robot = new Sprite(150, 200);
+
         robot.image = _gGame.assets[ _gAssetResource.sRobotWork ];
         robot.x = 150;
         robot.y = 150;
         
         robot._params = [];
         robot._params._scene = _scene;
+
+        robot._params._canPickUp = true;
+        robot._params._countPickUp_Alumi = 0;
+        robot._params._countPickUp_Steel = 0;
         
         /**
          * Group#addChild(node) {Function}
@@ -55,8 +70,74 @@ CMainRoboticsScreen = function()
          */
         _scene.addChild( backgroundR );
         _scene.addChild( goal );
+
+        // オブジェクト
+        for( var i=0; i<_gStageContents[ _gCurrentStage-1 ].object.length; i++)
+        {
+            var _object = _gStageContents[ _gCurrentStage-1 ].object[ i ];
+            
+            // アルミ缶
+            if ( _object[ 0 ] === "AlumiCan" )
+            {
+                // オブジェクトの作成
+                var _tmp = _gCommon.CreateSprite( _object[1], _object[2], 61, 110 );
+                _tmp.image = _gGame.assets[ _gAssetResource.sAlumiCan ];
+                
+                _tmp.addEventListener("enterframe", 
+                function()
+                {
+                    // ロボットが特定範囲内に入った場合
+                    if ( 
+                        robot._params._canPickUp === true &&
+                        robot.within( this, 75 ) 
+                    )
+                    {
+                        this.tl.fadeOut( 30 ).and().moveBy( 0, -100, 30 )
+                                .then( 
+                                    function(){ 
+                                        _scene.removeChild( this );
+                                    }
+                                );
+                        
+                        robot._params._countPickUp_Alumi++;
+                    }
+                });
+                
+                _scene.addChild( _tmp );
+            }
+            else if ( _object[ 0 ] === "SteelCan" )
+            {
+                // オブジェクトの作成
+                var _tmp = _gCommon.CreateSprite( _object[1], _object[2], 76, 142 );
+                _tmp.image = _gGame.assets[ _gAssetResource.sSteelCan ];
+                
+                _tmp.addEventListener("enterframe", 
+                function()
+                {
+                    // ロボットが特定範囲内に入った場合
+                    if (
+                        robot._params._canPickUp === true &&
+                        robot.within( this, 75 ) 
+                        )
+                    {
+                        this.tl.fadeOut( 30 ).and().moveBy( 0, -100, 30 )
+                                .then( 
+                                    function(){ 
+                                        _scene.removeChild( this );
+                                    }
+                                );
+                        robot._params._countPickUp_Steel++;
+                    }
+                });
+                
+                _scene.addChild( _tmp );
+            }
+        }
+        
         _scene.addChild( robot );
 
+        
+        
         /**
          * EventTarget#addEventListener(event, listener)
          * イベントに対するリスナを登録する。
@@ -79,7 +160,10 @@ CMainRoboticsScreen = function()
             this.frame = (this.age / 4) % 8 + 1;
             if(isGoal)
             {
-                if(this.x >= 775)
+                var func_goal = _gStageContents[ _gCurrentStage-1 ].func_goal;
+                
+                //if(this.x >= 775)
+                if ( func_goal(this) === true )
                 {
                     var _scene = this._params._scene;
                     
@@ -125,22 +209,35 @@ CMainRoboticsScreen = function()
                     {
                         // 今の画面の廃棄
                         _gGame.popScene();
-                        
-                        // タイトル画面に戻る
-                        var _title = new CTitleScreen;
-                        _title.CreateScene();
+
+                        _gCurrentStage++;
+                        if ( _gTotalStage < _gCurrentStage )
+                        {
+                            // タイトル画面に戻る
+                            var _title = new CTitleScreen;
+                            _title.CreateScene();
+                        }
+                        else
+                        {
+                            var _demo = new CDemoScreen;
+                            _demo.CreateScene();
+                        }
                     });
                 }
                 else
                 {
-                    this.x += 3;
+                    // this.x += 3;
                     
                     // ※
                     // パネルロジックがセットされているとき、その処理を用いで
                     // 動作に追加処理する
-                    if ( _gLogic !== null )
+                    if ( 
+                        _gLogic[0] !== null &&
+                        _gLogic[1] !== null 
+                        )
                     {
-                        _gLogic( this );
+                        var _target = _gLogic[0]( this );   // 一つ目のロジックで「対象」を決定する
+                        _gLogic[1]( _target );              // 二つ目のロジックで「行動」を決定する
                     }
                 }
             }
