@@ -1,9 +1,8 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
+/**
+ * コモンクラス
+ * @returns {CCommon}
+ */
 var CCommon = function() 
 {
     // グループの作成
@@ -45,6 +44,27 @@ var CCommon = function()
 
         return _chara;
     };
+    
+    // JSONファイルの読み込み
+    this.ReadJsonFile = function( strJsonPath, funcSetter )
+    {
+        // JSONファイルの読み込みを行う
+        httpObj = new XMLHttpRequest();
+        httpObj.open("get", strJsonPath, true);
+        httpObj.onload = function()
+        {
+            // ファイルを読み込んだのちにパースしてデータを格納する
+            // このとき「function(){}」のパラメータは関数として使用できるように特別に解析を入れている 
+            var parser = function(k,v){return v.toString().indexOf('function') === 0 ? eval('('+v+')') : v; };
+            var data = JSON.parse(this.responseText, parser);
+
+            // セッター関数で読み込んだデータを取得する
+            funcSetter( data );
+        };
+
+        // 読み込みを開始させる
+        httpObj.send(null);
+    }    
 };
 
 
