@@ -8,21 +8,30 @@ var _gGame = null;
 var _gScene = null;
 var _gCommon = new CCommon();
 
+var _gTotalStage = 1;
+var _gCurrentStage = 1;
+var _gLogicData = null;
+var _gStageContents = null;
+
 // リソースパスの定義
+var _gResourcesDir = "Resources/Textures/"
 var _gAssetResource = [];
 _gAssetResource = {
-    sGoalPath: "Resources/Textures/Items/goal.png",
-    sRobotWork: "Resources/Textures/Character/robot_walk_s.png",
-    sDragButton: "Resources/Textures/UI/Buttons/B_Active.png",
-    sDragButtonActive: "Resources/Textures/UI/Buttons/B_NonActive.png",
-    sDragFrame: "Resources/Textures/png/line.png",
-    sYajirushi: "Resources/Textures/png/yajirushi.png",
-    sClearBgPath: "Resources/Textures/UI/BG/background_gameclear.png",
-    sStartBtn: "Resources/B_Start.png",
-    sBgTitle: "Resources/background_title.png",
-    sBgBackGround: "Resources/background.png",
-    sIntroStage1: "Resources/intro_stage1.png",
-    sBgSGJ_background_L_02: "Resources/SGJ_background_L_02.png"
+    sGoalPath: _gResourcesDir + "Items/goal.png",
+    sRobotWork: _gResourcesDir + "Character/robot_walk_s.png",
+    sDragButton: _gResourcesDir + "UI/Buttons/B_Active.png",
+    sDragButtonActive: _gResourcesDir + "UI/Buttons/B_NonActive.png",
+    sDragFrame: _gResourcesDir + "png/line.png",
+    sDragFrame_Blue: _gResourcesDir + "png/line_blue.png",
+    sYajirushi: _gResourcesDir + "png/yajirushi.png",
+    sClearBgPath: _gResourcesDir + "UI/BG/background_gameclear.png",
+    sStartBtn: _gResourcesDir + "B_Start.png",
+    sBgTitle: _gResourcesDir + "background_title.png",
+    sBgBackGround: _gResourcesDir + "background.png",
+    sIntroStage1: _gResourcesDir + "intro_stage1.png",
+    sBgSGJ_background_L_02: _gResourcesDir + "SGJ_background_L_02.png",
+    sAlumiCan: _gResourcesDir + "CanCan/AlumiCan.png",
+    sSteelCan: _gResourcesDir + "CanCan/SteelCan.png"
 };
 
 var _gStageClearMessages = {
@@ -47,6 +56,22 @@ var isGoal = false;
  */
 window.onload = function()
 {
+    // JSONファイルを読み込み、パラメータをゲームに適用する
+    var strJsonPath = "./data/data_common.txt";
+    httpObj = new XMLHttpRequest();
+    httpObj.open("get", strJsonPath, true);
+    httpObj.onload = function()
+    {
+        var parser = function(k,v){return v.toString().indexOf('function') === 0 ? eval('('+v+')') : v; };
+        var myData = JSON.parse(this.responseText, parser);
+        
+        // alert( myData.item[0].TotalStage );
+        _gTotalStage = myData.TotalStage;
+        _gLogicData = myData.LogicData;
+        _gStageContents = myData.StageContents;
+    };
+    httpObj.send(null);
+    
     // Coreクラスの初期化、画面サイズを指定する
     // ゲーム処理のFPS値（秒間の更新回数）を指定する
     var game = new Core(960, 540);
@@ -60,13 +85,16 @@ window.onload = function()
         _gAssetResource.sDragButton,
         _gAssetResource.sDragButtonActive,
         _gAssetResource.sDragFrame,
+        _gAssetResource.sDragFrame_Blue,
         _gAssetResource.sYajirushi,
         _gAssetResource.sClearBgPath,
         _gAssetResource.sStartBtn,
         _gAssetResource.sBgTitle,
         _gAssetResource.sBgBackGround,
         _gAssetResource.sIntroStage1,
-        _gAssetResource.sBgSGJ_background_L_02
+        _gAssetResource.sBgSGJ_background_L_02,
+        _gAssetResource.sAlumiCan,
+        _gAssetResource.sSteelCan
     ]);
 
     /**

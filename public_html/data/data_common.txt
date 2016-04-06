@@ -1,0 +1,94 @@
+{
+  "TotalStage":3,
+  "LogicData":{
+    "act_walk": {
+      "name": "「歩く」",
+      "info": "前へ歩きます",
+      "type": 1,
+      "func": "function( e ){ e.x = e.x + 3; e._params._canPickUp = true; }"
+    },
+    "act_run": {
+      "name": "「走る」",
+      "info": "早く進みます",
+      "type": 1,
+      "func": "function( e ){ e.x = e.x + 9; e.y = e.y + 0; e._params._canPickUp = false; }"
+    },
+    "tgt_robot": {
+      "name": "「ロボット」",
+      "info": "ロボットが",
+      "type": 0,
+      "func": "function( e ){ return e; }"
+    },
+    "unknown": {
+      "name": "「もし」",
+      "info": "～ならば",
+      "type": 1,
+      "func": "function( e ){ e.x = e.x + 3; }"
+    }
+  },
+  "StageContents":[
+    {
+      "title": "歩かせよう！",
+      "panel": [
+        "tgt_robot", "act_walk"
+      ],
+      "panel_hole": [
+        0, 1
+      ],
+      "object":[
+      ],
+      "func_goal": "function( e ){ if( e.x >= 775 ){ return true; } else { return false; } }",
+      "tips_message":[
+        "TIPS: ",
+        "はじめはロボットを動かすところから始めましょう。",
+        "「歩く」または「走る」パネルをセットし、",
+        "「スタート」を押すとロボットは動き始めます。",
+        "目的地までたどり着くとゴールです！"
+      ]
+    },
+    {
+      "title": "空き缶を拾わせよう！（１）",
+      "panel": [
+        "tgt_robot", "act_walk", "act_run"
+      ],
+      "panel_hole": [
+        0, 1
+      ],
+      "object":[
+        [ "AlumiCan", 300, 150 ],
+        [ "SteelCan", 450, 250 ]
+      ],
+      "func_goal": "function( e ){ if( e.x >= 775 ){ return true; } else { return false; } }",
+      "tips_message":[
+        "TIPS: ",
+        "つぎはロボットに空きカンを拾わせてみましょう。",
+        "ロボットは「探す」のパネルでまわりを見回します。",
+        "見回している時に見つけたカンをロボットは拾ってくれます。",
+        "「探す」のパネルを追加してみましょう！"
+      ]
+    },
+    {
+      "title": "空き缶を拾わせよう！（２）",
+      "panel": [
+        "tgt_robot", "act_walk", "act_run"
+      ],
+      "panel_hole": [
+        0, 1
+      ],
+      "object":[
+        [ "AlumiCan", 300, 150 ],
+        [ "SteelCan", 450, 250 ],
+        [ "SteelCan", 540, 180 ]
+      ],
+      "func_goal": "function( e ){ if( e.x >= 775 ){ return true; } else { return false; } }",
+      "tips_message":[
+        "TIPS: ",
+        "最後の問題です。",
+        "あちこちに落ちている空きカンをロボットに拾わせましょう。",
+        "「歩く」で移動したあとに「探す」をセットしましょう。",
+        "「走る」では夢中になったロボットは見つけてくれません！"
+      ]
+    }
+  ]
+}
+
